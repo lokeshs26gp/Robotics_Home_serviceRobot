@@ -40,7 +40,7 @@ int main(int argc, char** argv)
    
    MoveBaseClient ac("move_base",true);
 
-  PublishRobotPose(robot_pos_pub,-3.369356,3.955442);
+   PublishRobotPose(robot_pos_pub,-3.369356,3.955442);
 
    while(!ac.waitForServer(ros::Duration(5.0))){
     ROS_INFO("waiting for the move_base action server to come up");

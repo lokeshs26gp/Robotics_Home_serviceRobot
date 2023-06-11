@@ -1,14 +1,12 @@
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
-#include <pick_objects/my_robot_pose.h>
-#include <std_msgs/Float64.h>
-
 
 visualization_msgs::Marker marker;
-pick_objects::my_robot_pose msg;
+
 
 double pickup_pose_x = -3.369356,pickup_pose_y=3.955442;
 double dropoff_pose_x = -2.733776,dropoff_pose_y = -4.054781;
+int step = 0;
 
 void InitMarker()
 {
@@ -20,7 +18,7 @@ void InitMarker()
       marker.type = shape;
       marker.action = visualization_msgs::Marker::ADD;
 
-      marker.pose.position.x =0;
+      marker.pose.position.x = 0 ;
       marker.pose.position.y =0;
       marker.pose.position.z =0;
 
@@ -40,26 +38,11 @@ void InitMarker()
       marker.lifetime = ros::Duration();
 }
 
-void MsgCallBack(const pick_objects::my_robot_pose& pMsg)
+void SetMarkerPosition(double x,double y)
 {
-  ROS_INFO("marker position received!");
-  msg = pMsg;
-  if(msg.pose_x == 0 &&  msg.pose_y == 0)
-  {
-    marker.action = visualization_msgs::Marker::DELETE;
-    ROS_INFO("marker deleted!");
-  }
-  else 
-  {
-    marker.pose.position.x =msg.pose_x;
-    marker.pose.position.y =msg.pose_y;
-    marker.action = visualization_msgs::Marker::ADD;
-    ROS_INFO("marker added at! x=%5.2f y=%5.2f",msg.pose_x,msg.pose_y);
-  }
-
-    
+    marker.pose.position.x = x;
+    marker.pose.position.y = y;
 }
-
 
 int main(int argc,char** argv)
 {
@@ -68,16 +51,13 @@ int main(int argc,char** argv)
     ros::NodeHandle n;
     ros:: Rate r(1);
 
-
     ros::Publisher marker_pub=n.advertise<visualization_msgs::Marker>("visualization_marker",1);
-    ros:: Subscriber robot_pose_sub = n.subscribe("/robot_pose_events",10,MsgCallBack);
-      
+  
     InitMarker();
     
     while(ros::ok())
     {
-        ros::spinOnce();
-       
+        
         while(marker_pub.getNumSubscribers()<1)
         {
           if(!ros::ok())
@@ -88,8 +68,41 @@ int main(int argc,char** argv)
           sleep(1);
         }
 
-        marker_pub.publish(marker);
-        
+        switch(step)
+        {
+
+            case 0:
+            {
+              SetMarkerPosition(pickup_pose_x,pickup_pose_y);
+              marker_pub.publish(marker);
+              ROS_INFO("Marker at pick up location");
+              ++step;
+              break;
+            }
+            case 1:
+            {
+              ros::Duration(5.0).sleep();
+              marker.action = visualization_msgs::Marker::DELETE;
+              marker_pub.publish(marker);
+              ROS_INFO("Marker deleted");
+              ++step;
+              break;
+            }
+            case 2:
+            {
+              ros::Duration(5.0).sleep();
+              marker.action = visualization_msgs::Marker::ADD;
+              SetMarkerPosition(dropoff_pose_x,dropoff_pose_y);
+              ROS_INFO("Marker at drop off location");
+              marker_pub.publish(marker);
+              break;
+            }
+
+        }
+      
+      
+        ros::spinOnce();
+
         r.sleep();
 
     }

@@ -68,6 +68,17 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
@@ -121,17 +132,6 @@ test:
 test/fast: test
 
 .PHONY : test/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -255,6 +255,48 @@ add_markers/fast:
 	cd /home/robond/home/workspace/catkin_ws/build && $(MAKE) -f add_markers/CMakeFiles/add_markers.dir/build.make add_markers/CMakeFiles/add_markers.dir/build
 .PHONY : add_markers/fast
 
+# Convenience name for target.
+add_markers/CMakeFiles/add_marker_by_timer.dir/rule:
+	cd /home/robond/home/workspace/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 add_markers/CMakeFiles/add_marker_by_timer.dir/rule
+.PHONY : add_markers/CMakeFiles/add_marker_by_timer.dir/rule
+
+# Convenience name for target.
+add_marker_by_timer: add_markers/CMakeFiles/add_marker_by_timer.dir/rule
+
+.PHONY : add_marker_by_timer
+
+# fast build rule for target.
+add_marker_by_timer/fast:
+	cd /home/robond/home/workspace/catkin_ws/build && $(MAKE) -f add_markers/CMakeFiles/add_marker_by_timer.dir/build.make add_markers/CMakeFiles/add_marker_by_timer.dir/build
+.PHONY : add_marker_by_timer/fast
+
+src/add_marker_by_timer.o: src/add_marker_by_timer.cpp.o
+
+.PHONY : src/add_marker_by_timer.o
+
+# target to build an object file
+src/add_marker_by_timer.cpp.o:
+	cd /home/robond/home/workspace/catkin_ws/build && $(MAKE) -f add_markers/CMakeFiles/add_marker_by_timer.dir/build.make add_markers/CMakeFiles/add_marker_by_timer.dir/src/add_marker_by_timer.cpp.o
+.PHONY : src/add_marker_by_timer.cpp.o
+
+src/add_marker_by_timer.i: src/add_marker_by_timer.cpp.i
+
+.PHONY : src/add_marker_by_timer.i
+
+# target to preprocess a source file
+src/add_marker_by_timer.cpp.i:
+	cd /home/robond/home/workspace/catkin_ws/build && $(MAKE) -f add_markers/CMakeFiles/add_marker_by_timer.dir/build.make add_markers/CMakeFiles/add_marker_by_timer.dir/src/add_marker_by_timer.cpp.i
+.PHONY : src/add_marker_by_timer.cpp.i
+
+src/add_marker_by_timer.s: src/add_marker_by_timer.cpp.s
+
+.PHONY : src/add_marker_by_timer.s
+
+# target to generate assembly for a file
+src/add_marker_by_timer.cpp.s:
+	cd /home/robond/home/workspace/catkin_ws/build && $(MAKE) -f add_markers/CMakeFiles/add_marker_by_timer.dir/build.make add_markers/CMakeFiles/add_marker_by_timer.dir/src/add_marker_by_timer.cpp.s
+.PHONY : src/add_marker_by_timer.cpp.s
+
 src/add_markers.o: src/add_markers.cpp.o
 
 .PHONY : src/add_markers.o
@@ -289,6 +331,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install"
+	@echo "... edit_cache"
 	@echo "... visualization_msgs_generate_messages_nodejs"
 	@echo "... visualization_msgs_generate_messages_eus"
 	@echo "... list_install_components"
@@ -299,8 +342,11 @@ help:
 	@echo "... visualization_msgs_generate_messages_cpp"
 	@echo "... visualization_msgs_generate_messages_py"
 	@echo "... add_markers"
+	@echo "... add_marker_by_timer"
 	@echo "... test"
-	@echo "... edit_cache"
+	@echo "... src/add_marker_by_timer.o"
+	@echo "... src/add_marker_by_timer.i"
+	@echo "... src/add_marker_by_timer.s"
 	@echo "... src/add_markers.o"
 	@echo "... src/add_markers.i"
 	@echo "... src/add_markers.s"
