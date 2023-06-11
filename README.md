@@ -10,12 +10,15 @@ Localization: Achieved using Adaptive Monte Carlo Localization (AMCL) - or a par
 
 Path planning: the custom pick_objects node communicates with the ROS navigation stack. When a goal is sent, a SimpleActionClient uses Djikstra's Algorithm to find a path to the goal. The planner is subscribed to the map topic.
 
-In order to carry out the task of navigating to pickup and drop-off locations, the pick_objects node publishes the x, y coordinates of the robot to the "robot_pose_event" topic 
-pick_objects publish the robot pose when successfull completion of tasks of reaching pickup and drop of location.
+In order to carry out the task of navigating to pickup and drop-off locations, the pick_objects node publishes the x, y coordinates of the robot to the "robot_pose_event" topic.
+
+pick_objects node publish the robot pose when successfull completion of tasks of reaching pickup and drop of location.
+
 The add_markers node subscribes to the "robot_pose_event" topic and either adds or deletes a marker, depending on the robot pose sent by the pick_objects node.
 
 
 Dependencies
+
 ROS: Install Robot Operating System (ROS) by following these instructions: http://wiki.ros.org/Installation
 
 Follow the instructions for a Desktop-Full Install.
